@@ -1,3 +1,3 @@
 # Js-mastery-projects
-Here the branches are used to store all the projects I worked on during the course of mastery🚀🚀🚀.
+The projects I worked on while study the Javascript Mastery Course by Jonas Schmedtmann🚀🚀🚀.
 Now let's have fun 🎉.
