@@ -1,53 +1,70 @@
 'use strict';
-// document.querySelector('.message').textContent = '🎉 correct Number!';
-// document.querySelector('.number').textContent = 13;
-// document.querySelector('.score').textContent = 17;
-
-// document.querySelector('.guess').value = 23;
 
 let message = document.querySelector('.message');
 const randomNumberElement = document.querySelector('.number');
 const check = document.querySelector('.check');
 const guessInput = document.querySelector('.guess');
+const playAgain = document.querySelector('.again');
+let highScoreElement = document.querySelector('.highscore');
 let displayScore = document.querySelector('.score');
-let score = 20;
-displayScore.textContent = score;
-const secretNumber = Math.trunc(Math.random() * 20) + 1;
-randomNumberElement.textContent = secretNumber;
 
-check.addEventListener('click', () => {
+// Initial Values
+let score = 20;
+let highScore = 0;
+displayContent(displayScore, score);
+let secretNumber = Math.trunc(Math.random() * 20) + 1;
+displayContent(message, 'Start guessing...');
+
+// Handlers
+function displayContent(element, content) {
+  return (element.textContent = content);
+}
+function checkGuess() {
   const guess = Number(guessInput.value);
 
   // when there is no input
   if (!guess) {
-    message.textContent = '⛔️ No Input Number';
+    displayContent(message, '⛔️ No Input Number');
 
     //when the player wins
   } else if (guess === secretNumber) {
-    message.textContent = '🎉 correct Number!';
+    displayContent(randomNumberElement, secretNumber);
+    displayContent(message, '🎉 correct Number!');
     document.querySelector('body').style.backgroundColor = 'green';
     randomNumberElement.style.width = '30rem';
-
-    // When the guess is too high
-  } else if (guess > secretNumber) {
-    if (score > 1) {
-      message.textContent = '📈 Too high!';
-      score--;
-      displayScore.textContent = score;
-    } else {
-      message.textContent = 'Oops! You lost the game.';
-      displayScore.textContent = 0;
+    if (score > highScore) {
+      highScore = score;
+      displayContent(highScoreElement, score);
     }
 
-    // when the guess is too low
-  } else if (guess < secretNumber) {
+    // when the guess is wrong
+  } else if (guess !== secretNumber) {
     if (score > 1) {
-      message.textContent = '📉 Too low!';
+      displayContent(
+        message,
+        guess > secretNumber ? '📈 Too high!' : '📉 Too low!'
+      );
+
       score--;
-      displayScore.textContent = score;
+      displayContent(displayScore, score);
     } else {
-      message.textContent = '💥 You lost the game!';
-      displayScore.textContent = 0;
+      displayContent(message, '💥 You lost the game!');
+      displayContent(displayScore, 0);
     }
   }
-});
+}
+// The Play again button functionality
+const again = () => {
+  score = 20;
+  secretNumber = Math.trunc(Math.random() * 20) + 1;
+  guessInput.value = '';
+  displayContent(displayScore, score);
+  displayContent(randomNumberElement, '?');
+  displayContent(message, 'Start guessing...');
+  document.querySelector('body').style.backgroundColor = '#222';
+  randomNumberElement.style.width = '15rem';
+};
+
+// event handlers for playing again and checking answer
+check.addEventListener('click', checkGuess);
+playAgain.addEventListener('click', again);
