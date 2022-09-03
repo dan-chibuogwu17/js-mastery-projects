@@ -12,6 +12,10 @@ const restaurant = {
   starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
   mainMenu: ['Pizza', 'Pasta', 'Risotto'],
 
+  order: function(starterIndex, mainIndex) {
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]]
+  },
+
   openingHours: {
     thu: {
       open: 12,
@@ -27,3 +31,11 @@ const restaurant = {
     },
   },
 };
+let [main, , secondary] = restaurant.categories;
+console.log(main, secondary);
+
+// to switch variables or reassigning them
+[main, secondary] = [secondary, main]
+console.log(main, secondary);
+
+restaurant.order
